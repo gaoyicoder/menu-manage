@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  serverUrl : 'https://backend.gaoyicoder.com',
+  accessToken : '87c73aca29b94b6b44c0cbb646885846',
 };
 
 /*

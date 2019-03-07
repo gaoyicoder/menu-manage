@@ -1,49 +1,72 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
-
+import { AuthGuard } from '../guards/auth.guard';
 const routes: Routes = [
   {
     path: 'tabs',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
+        path: 'index',
+        canActivate: [AuthGuard],
         children: [
           {
             path: '',
-            loadChildren: '../tab1/tab1.module#Tab1PageModule'
+            loadChildren: '../index/index.module#IndexPageModule'
           }
         ]
       },
       {
-        path: 'tab2',
+        path: 'order',
+        canActivate: [AuthGuard],
         children: [
           {
             path: '',
-            loadChildren: '../tab2/tab2.module#Tab2PageModule'
+            loadChildren: '../order/order.module#OrderPageModule'
           }
         ]
       },
       {
-        path: 'tab3',
+        path: 'balance',
+        canActivate: [AuthGuard],
         children: [
           {
             path: '',
-            loadChildren: '../tab3/tab3.module#Tab3PageModule'
+            loadChildren: '../balance/balance.module#BalancePageModule'
+          }
+        ]
+      },
+      {
+        path: 'member',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: '',
+            loadChildren: '../member/member.module#MemberPageModule'
+          }
+        ]
+      },
+      {
+        path: 'menu',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: '',
+            loadChildren: '../menu/menu.module#MenuPageModule'
           }
         ]
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/tabs/index',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/index',
     pathMatch: 'full'
   }
 ];

@@ -1,6 +1,8 @@
 {
   "name": "menuManage",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "33e133f6"
 }
