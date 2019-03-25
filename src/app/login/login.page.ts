@@ -33,13 +33,10 @@ export class LoginPage implements OnInit {
       if(this.userService.authenticationState.observers === undefined || this.userService.authenticationState.observers.length == 0) {
         this.userService.subscribeAuthState('/tabs/index');
       }
-      let prompt = this.alertCtrl.create({
-        header: '登录失败',
-        message: '用户名或密码错误',
-      });
+      
       let username = this.loginForm.value.username;
       let password = this.loginForm.value.password;
-      this.userService.login(username, password, prompt);
+      this.userService.login(username, password, this.alertCtrl);
     }
   }
 

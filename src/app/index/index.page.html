@@ -1,9 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>index</ion-title>
+    <ion-title>首页</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+	<ion-button *ngIf="!selectedPrinter" (click)="getDeviceList()" expand="full" >设置打印机</ion-button>
+	<div *ngIf="selectedPrinter">{{selectedPrinter.label}} | <ion-button (click)="getDeviceList()">重新选择</ion-button></div>
 </ion-content>

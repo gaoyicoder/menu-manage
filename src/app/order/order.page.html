@@ -1,9 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>order</ion-title>
+    <ion-title>订单</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+	<ion-card *ngFor="let order of orderData">
+		<ion-item><h2>桌号：{{order.tableNum}}</h2></ion-item>
+		<ion-item lines="none">小计：{{order.subtotal}}</ion-item>
+		<ion-item lines="none">状态：{{orderStatusList[order.status]}}</ion-item>
+		<ion-grid>
+			<ion-row *ngFor='let rowNum of order.detailRowNum'>
+				<ion-col *ngFor='let colNum of order.detailColNum'>
+					<span *ngIf='order.detail[rowNum*3+colNum]!==undefined'>
+						{{order.detail[rowNum*3+colNum].menuName}}*{{order.detail[rowNum*3+colNum].num}}
+					</span>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+		<ion-item lines="none">备注：{{order.remarks}}</ion-item>
+		<ion-row text-center>
+			<ion-col><ion-button size="large" (click)="printOrder(order)">确认并打印</ion-button></ion-col>
+			<ion-col><ion-button size="large" (click)="cancelOrder(order)">取消</ion-button></ion-col>
+		</ion-row>
+	</ion-card>
 </ion-content>

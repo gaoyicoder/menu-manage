@@ -3,8 +3,12 @@ import { Platform, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { AppService } from './app.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+const authToken = 'auth-token';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +16,16 @@ import { environment } from '../../environments/environment';
 
 export class UserService {
 
-	public authToken = 'auth-token';
   public authenticationState;
   public serverUrl = environment.serverUrl;
 
-  constructor(private storage: Storage, private plt: Platform, private router: Router, private alertCtrl: AlertController, private http: HttpClient) {
+  constructor(
+    private storage: Storage, 
+    private plt: Platform, private router: Router, 
+    private alertCtrl: AlertController, private http: HttpClient,
+    private appService: AppService,
+    private jwtHelper: JwtHelperService
+  ) {
     let prompt = this.alertCtrl.create({});
     this.authenticationState = new BehaviorSubject({status:0,alert: prompt});
   	this.plt.ready().then(() => {
@@ -24,33 +33,59 @@ export class UserService {
     });
   }
 
+  static getTokenPromise(storage: Storage) {
+    //TODO: Can add token expire verification date in this function.
+    return storage.get(authToken);
+  }
+
   checkToken() {
     let prompt = this.alertCtrl.create({});
-    this.storage.get(this.authToken).then(res => {
+    UserService.getTokenPromise(this.storage).then(res => {
       if (res) {
+        this.appService.user = this.jwtHelper.decodeToken(res);
         this.authenticationState.next({status:1,alert: prompt});
       }
     })
   }
 
-  login(username, password, prompt) {
-    let httpParams = new HttpParams();
-    httpParams.set('username', username);
-    httpParams.set('password', password);
+  login(username, password, alertCtrl) {
+    let formData = new FormData();
+    formData.append('username', username)
+    formData.append('password', password)
+    formData.append('accessToken', environment.accessToken);
 
-    this.http.get(this.serverUrl+'/admin/login', {params: httpParams})
-    .subscribe( data => {
-
+    let alertFail = alertCtrl.create({
+      header: '登录失败',
+      message: '用户名或密码错误',
     });
-    return this.authenticationState.next({status:2,alert: prompt});
-    // return this.storage.set(this.authToken, 'Bearer 1234567').then(() => {
-    //   this.authenticationState.next(1);
-    // });
+
+    let alertError = alertCtrl.create({
+      header: '服务器出错',
+      message: '服务器出错，请稍后再试',
+    });
+    let prompt = this.alertCtrl.create({});
+
+    this.http.post(this.serverUrl+'/admin/login', formData)
+    .subscribe(
+      data => {
+        if (data['status'] == 200) {
+          this.storage.set(authToken, data['token']).then(() => {
+            this.appService.user = this.jwtHelper.decodeToken(data['token']);
+            this.authenticationState.next({status:1,alert: prompt});
+          });
+        } else {
+          return this.authenticationState.next({status:2,alert: alertFail});
+        }
+      },
+      err => {
+        return this.authenticationState.next({status:2,alert: alertError});
+      }
+    );
   }
 
   logout() {
     let prompt = this.alertCtrl.create({});
-    return this.storage.remove(this.authToken).then(() => {
+    return this.storage.remove(authToken).then(() => {
       this.authenticationState.next({status:0,alert: prompt});
     });
   }

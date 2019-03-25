@@ -11,6 +11,18 @@ import { AppComponent } from './app.component';
 
 import { IonicStorageModule, Storage } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { UserService } from './services/user.service';
+import { AppService } from './services/app.service';
+
+export function jwtOptionsFactory(storage) {
+  return {
+    tokenGetter: () => { 
+      return UserService.getTokenPromise(storage);
+    },
+    whitelistedDomains:['backend.gaoyicoder.com'],
+  }
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,11 +33,19 @@ import { HttpClientModule } from '@angular/common/http';
 	  AppRoutingModule,
 	  IonicStorageModule.forRoot(),
 	  HttpClientModule,
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+        deps: [Storage]
+      }
+    })
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    AppService
   ],
   bootstrap: [AppComponent]
 })
