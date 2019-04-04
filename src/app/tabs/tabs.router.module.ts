@@ -54,6 +54,20 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: '../menu/menu.module#MenuPageModule'
+          },
+          {
+            path: 'menu-type',
+            loadChildren: '../menu-type/menu-type.module#MenuTypePageModule'
+          }
+        ]
+      },
+      {
+        path: 'menu-detail',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: '',
+            loadChildren: '../menu-detail/menu-detail.module#MenuDetailPageModule'
           }
         ]
       },

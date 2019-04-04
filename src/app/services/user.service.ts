@@ -94,16 +94,37 @@ export class UserService {
     return this.authenticationState.value.status;
   }
 
-  subscribeAuthState(returnUrl) {
+  subscribeAuthState(returnUrl, params = {}) {
     this.authenticationState.subscribe(result => {
       if (result.status == 1) {
-        this.router.navigate([returnUrl]);
+        let arrUrl = returnUrl.split("?");
+        this.router.navigate([arrUrl[0]], { queryParams: params});
       } else if(result.status == 0){
         this.router.navigate(['/login']);
       } else if (result.status == 2){
         result.alert.then(alert => { alert.present(); });
       }
     });
+  }
+
+  getURLParameters(sURL)
+  {
+    if (sURL.indexOf("?") > 0)
+    {
+      var arrParams = sURL.split("?");
+      var arrURLParams = arrParams[1].split("&");
+      var returnParams = new Array(arrURLParams.length);
+
+      var i = 0;
+      for (i = 0; i<arrURLParams.length; i++)
+      {
+        var sParam =  arrURLParams[i].split("=");
+        if (sParam[0] && sParam[1]) {
+          returnParams[sParam[0]] = unescape(sParam[1]);
+        }
+      }
+      return returnParams;
+    }
   }
 
 }

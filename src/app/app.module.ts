@@ -14,6 +14,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { UserService } from './services/user.service';
 import { AppService } from './services/app.service';
+import { Camera } from '@ionic-native/camera/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/File/ngx';
+
+import { MenuPopComponent } from './components/menu-pop/menu-pop.component';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -25,8 +31,8 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, MenuPopComponent],
+  entryComponents: [MenuPopComponent],
   imports: [
 	  BrowserModule, 
 	  IonicModule.forRoot(), 
@@ -45,7 +51,12 @@ export function jwtOptionsFactory(storage) {
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AppService
+    AppService,
+    Camera,
+    WebView,
+    FileTransfer,
+    FileTransferObject,
+    File,
   ],
   bootstrap: [AppComponent]
 })

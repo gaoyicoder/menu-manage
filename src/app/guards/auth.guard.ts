@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
   	if (this.userService.isAuthenticated()===1) {
   		return true;
   	} else {
-      this.userService.subscribeAuthState(state.url);
+      this.userService.subscribeAuthState(state.url, state.root.queryParams);
       return false;
     }
   }

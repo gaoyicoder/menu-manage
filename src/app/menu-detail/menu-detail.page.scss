@@ -1,0 +1,29 @@
+.menu-img {
+	display: block;
+	margin: 5px auto;
+}
+
+ion-item.selw75 {
+  ion-label {
+    max-width: 25%;
+  }
+  ion-select {
+    min-width: 50%;
+  }
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  ion-button {
+  	margin:10px 10px;
+  }
+}
+
+.menu-detail-page {
+  .input-hint {
+    font-size: 0.8em;
+    color: var(--ion-color-danger);
+  }
+}

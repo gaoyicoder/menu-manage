@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+  	<ion-buttons slot="start" >
+  		<ion-button routerLink="/tabs/menu"><ion-icon name="arrow-dropleft"></ion-icon>返回</ion-button>
+    </ion-buttons>
+    <ion-title>菜单详情</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+	<form [formGroup]='menuForm' (ngSubmit)="onSubmit()">
+		<ion-list class="menu-detail-page">
+		  <ion-item>
+		  	<ion-label fixed>名称：</ion-label>
+		    <ion-input type="text" placeholder="请输入名称" formControlName="menuName"></ion-input>
+
+		    <ion-text *ngIf="submitted&&menuForm.controls['menuName'].invalid&&menuForm.controls['menuName'].errors.required" class="input-hint">名称不能为空</ion-text>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>价格：</ion-label>
+		    <ion-input type="number" placeholder="请输入价格" formControlName="price"></ion-input>
+
+		    <ion-text *ngIf="submitted&&menuForm.controls['price'].invalid&&menuForm.controls['price'].errors.required" class="input-hint">价格不能为空</ion-text>
+		  </ion-item>
+		  <ion-item class='selw75'>
+		  	<ion-label fixed>类别：</ion-label>
+		  	<ion-select formControlName="menuTypeId">
+		      <ion-select-option *ngFor="let menuType of menuTypeList" [value]="menuType.id">{{menuType.typeName}}</ion-select-option>
+		    </ion-select>
+		    <ion-text *ngIf="submitted&&menuForm.controls['menuTypeId'].invalid&&menuForm.controls['menuTypeId'].errors.required" class="input-hint">类别不能为空</ion-text>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>顺序：</ion-label>
+		    <ion-input type="number" placeholder="请输入顺序" formControlName="sequence"></ion-input>
+		    <ion-text *ngIf="submitted&&menuForm.controls['sequence'].invalid&&menuForm.controls['sequence'].errors.required" class="input-hint">顺序不能为空</ion-text>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-img (click)="pickImage()" class="menu-img" src="{{menuObj.imageUrl}}"></ion-img>
+		  </ion-item>
+		  <div class="container">
+			  <div class="button-wrapper">
+			    <ion-button size="large" type="submit">保存</ion-button>
+		  		<ion-button size="large" type="button" routerLink="/tabs/menu">取消</ion-button>
+			  </div>
+			</div>
+		</ion-list>
+	</form>
+</ion-content>

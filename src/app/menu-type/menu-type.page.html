@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>菜单：类别</ion-title>
+    <ion-button slot="end" (click)="presentPop($event)">类别管理</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-list>
+		<ion-item>
+			<ion-grid>
+				<ion-row>
+					<ion-col>名称</ion-col>
+					<ion-col>顺序</ion-col>
+					<ion-col>操作</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-item>
+		<ion-item *ngFor='let menuType of menuTypeData'>
+			<ion-grid>
+				<ion-row>
+					<ion-col>
+						<ion-input type="input" placeholder="请输入名称" [ngModel]="menuType.typeName"></ion-input>
+					</ion-col>
+					<ion-col>
+						<ion-input type="number" placeholder="请输入顺序" [ngModel]="menuType.sequence"></ion-input>
+					</ion-col>
+					<ion-col>
+						<ion-button type="submit" (click)="confirmDelete(menuType)">删除</ion-button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-item>
+		<ion-item>
+			<div class="container">
+				<div class="button-wrapper">
+			    <ion-button size="large" type="button" (click)="addNew()">添加</ion-button>
+		  		<ion-button size="large" type="button" (click)="save()">保存</ion-button>
+			  </div>
+			</div>
+		</ion-item>
+	</ion-list>
+</ion-content>

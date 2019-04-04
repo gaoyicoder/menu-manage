@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
-
+import { AuthGuard } from '../guards/auth.guard';
 import { MenuPage } from './menu.page';
 
 const routes: Routes = [
