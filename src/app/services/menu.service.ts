@@ -55,6 +55,15 @@ export class MenuService {
     });
   }
 
+  deleteMenu(menu) {
+    return new Promise(resolve=>{
+      this.http.delete(this.serverUrl+'/menus/'+menu.id).subscribe(
+        data => {
+          resolve(data);
+        }
+      );
+    });
+  }
   uploadImage(path, id) {
     return UserService.getTokenPromise(this.storage).then(res => {
       if (res) {

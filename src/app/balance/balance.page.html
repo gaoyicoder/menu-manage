@@ -1,9 +1,46 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>balance</ion-title>
+    <ion-title>统计</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+	<form [formGroup]='balanceForm' (ngSubmit)="onSubmit()">
+		<ion-item>
+		  <ion-label>起始时间</ion-label>
+		  <ion-datetime formControlName="fromDate" display-format="YYYY-MM-DD"></ion-datetime>
+		</ion-item>
+		<ion-item>
+		  <ion-label>结束时间</ion-label>
+		  <ion-datetime formControlName="toDate" display-format="YYYY-MM-DD"></ion-datetime>
+		</ion-item>
+		<div class="container">
+		  <div class="button-wrapper">
+		    <ion-button size="large" type="submit" >统计</ion-button>
+		  </div>
+		</div>
+	</form>
+	<ion-item-divider>
+    <ion-label>
+      统计结果：
+    </ion-label>
+  </ion-item-divider>
+  <ng-container *ngIf="balance.length>0">
+  	<ion-item>
+  		<ion-label>金额总计：{{balance.total}}</ion-label>
+  	</ion-item>
+  	<ion-item>
+  		<ion-label>订单总计：{{balance.total}}</ion-label>
+  	</ion-item>
+  	<ion-item>
+  		<ion-label>每天平均：{{balance.total}}</ion-label>
+  	</ion-item>
+  	<ion-item>
+  		<ion-label>热门菜品：</ion-label>
+  		<ion-item *ngFor="let top of balance.topList">
+  			{{top.name}}：{{top.num}}次
+  		</ion-item>
+  	</ion-item>
+  </ng-container>
+  
 </ion-content>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastController } from '@ionic/angular';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-balance',
@@ -7,9 +10,44 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BalancePage implements OnInit {
 
-  constructor() { }
+	public balanceForm: FormGroup;
+  private balance = [];
+  constructor(
+  	private formBuilder: FormBuilder,
+  	private toastCtrl: ToastController,
+  	private orderService: OrderService
+  ) {
 
-  ngOnInit() {
+  	this.balanceForm = this.formBuilder.group({
+  		fromDate: ['', Validators.required],
+  		toDate: ['', Validators.required],
+  	});
   }
 
+  ngOnInit() {
+    console.log(this.balance);
+  }
+
+  async presentToast(message) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+    });
+    toast.present();
+  }
+
+  onSubmit() {
+  	if (this.balanceForm.invalid) {
+  		this.presentToast('起止时间不能为空');
+      return false;
+    } else {
+    	this.orderService.orderBalance(
+    		this.balanceForm.value.fromDate, 
+    		this.balanceForm.value.toDate
+    	).then((data: any) => {
+        this.balance = data;
+      });
+    }
+  }
 }

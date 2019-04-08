@@ -24,7 +24,7 @@
 					<ion-row>
 						<ion-col size="5">{{menu.menuName}}</ion-col>
 						<ion-col>{{menu.price}}</ion-col>
-						<ion-col>{{menu.menuTypeId}}</ion-col>
+						<ion-col>{{menuTypeData[menu.menuTypeId]}}</ion-col>
 						<ion-col>
 							<ion-thumbnail><img src="{{menu.imageUrl}}?random={{random}}"></ion-thumbnail>
 					  </ion-col>
@@ -35,7 +35,7 @@
 				<ion-item-option (click)="editMenu(menu, slidingItem)">
         	<ion-icon name="create"></ion-icon>
         </ion-item-option>
-        <ion-item-option (click)="deleteMenu(menu)" color="danger">
+        <ion-item-option (click)="confirmDelete(menu, slidingItem)" color="danger">
           <ion-icon name="trash"></ion-icon>
         </ion-item-option>
       </ion-item-options>

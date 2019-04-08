@@ -20,10 +20,10 @@
 			<ion-grid>
 				<ion-row>
 					<ion-col>
-						<ion-input type="input" placeholder="请输入名称" [ngModel]="menuType.typeName"></ion-input>
+						<ion-input type="input" placeholder="请输入名称" [(ngModel)]="menuType.typeName"></ion-input>
 					</ion-col>
 					<ion-col>
-						<ion-input type="number" placeholder="请输入顺序" [ngModel]="menuType.sequence"></ion-input>
+						<ion-input type="number" placeholder="请输入顺序" [(ngModel)]="menuType.sequence"></ion-input>
 					</ion-col>
 					<ion-col>
 						<ion-button type="submit" (click)="confirmDelete(menuType)">删除</ion-button>

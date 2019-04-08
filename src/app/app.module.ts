@@ -20,6 +20,7 @@ import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ng
 import { File } from '@ionic-native/File/ngx';
 
 import { MenuPopComponent } from './components/menu-pop/menu-pop.component';
+import { OrderPopComponent } from './components/order-pop/order-pop.component';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -31,8 +32,8 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent, MenuPopComponent],
-  entryComponents: [MenuPopComponent],
+  declarations: [AppComponent, MenuPopComponent, OrderPopComponent],
+  entryComponents: [MenuPopComponent, OrderPopComponent],
   imports: [
 	  BrowserModule, 
 	  IonicModule.forRoot(), 

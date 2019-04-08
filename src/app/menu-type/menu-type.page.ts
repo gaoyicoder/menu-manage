@@ -84,6 +84,7 @@ export class MenuTypePage implements OnInit {
   }
 
   save() {
+    console.log(this.menuTypeData);
     let isValid = true;
     this.menuTypeData.forEach((data)=> {
       if(data.typeName===''||data.sequence==='') {
@@ -92,7 +93,14 @@ export class MenuTypePage implements OnInit {
       }
     });
     if (isValid) {
-      this.menuTypeService.saveAll(this.menuTypeData);
+      this.menuTypeService.saveAll(this.menuTypeData).then((data:any) => {
+        if(data.status == 200) {
+          this.presentToast('保存成功');
+          this.menuTypeData = data.data;
+        } else {
+          this.presentToast('保存失败，请稍后再试');
+        }
+      });
     }
   }
 
