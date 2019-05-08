@@ -25,22 +25,24 @@
       统计结果：
     </ion-label>
   </ion-item-divider>
-  <ng-container *ngIf="balance.length>0">
+  <ng-container *ngIf="JSON.stringify(balance) != '{}'">
   	<ion-item>
   		<ion-label>金额总计：{{balance.total}}</ion-label>
   	</ion-item>
   	<ion-item>
-  		<ion-label>订单总计：{{balance.total}}</ion-label>
+  		<ion-label>订单总计：{{balance.totalNum}}</ion-label>
   	</ion-item>
   	<ion-item>
-  		<ion-label>每天平均：{{balance.total}}</ion-label>
+  		<ion-label>每天平均：{{balance.avg}}</ion-label>
   	</ion-item>
-  	<ion-item>
-  		<ion-label>热门菜品：</ion-label>
-  		<ion-item *ngFor="let top of balance.topList">
+  	<ion-list>
+  		<ion-list-header>
+  			<h5>热门菜品：</h5>
+  		</ion-list-header>
+			<ion-item *ngFor="let top of balance.topList">
   			{{top.name}}：{{top.num}}次
   		</ion-item>
-  	</ion-item>
+		</ion-list>
   </ng-container>
   
 </ion-content>

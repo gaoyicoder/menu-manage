@@ -11,7 +11,8 @@ import { OrderService } from '../services/order.service';
 export class BalancePage implements OnInit {
 
 	public balanceForm: FormGroup;
-  private balance = [];
+  private balance = {};
+  private JSON = JSON;
   constructor(
   	private formBuilder: FormBuilder,
   	private toastCtrl: ToastController,
@@ -25,7 +26,6 @@ export class BalancePage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.balance);
   }
 
   async presentToast(message) {
@@ -47,6 +47,7 @@ export class BalancePage implements OnInit {
     		this.balanceForm.value.toDate
     	).then((data: any) => {
         this.balance = data;
+        console.log(this.balance);
       });
     }
   }

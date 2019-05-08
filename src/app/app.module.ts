@@ -21,6 +21,7 @@ import { File } from '@ionic-native/File/ngx';
 
 import { MenuPopComponent } from './components/menu-pop/menu-pop.component';
 import { OrderPopComponent } from './components/order-pop/order-pop.component';
+import { GuestPopComponent } from './components/guest-pop/guest-pop.component';
 
 export function jwtOptionsFactory(storage) {
   return {
@@ -32,8 +33,8 @@ export function jwtOptionsFactory(storage) {
 }
 
 @NgModule({
-  declarations: [AppComponent, MenuPopComponent, OrderPopComponent],
-  entryComponents: [MenuPopComponent, OrderPopComponent],
+  declarations: [AppComponent, MenuPopComponent, OrderPopComponent, GuestPopComponent],
+  entryComponents: [MenuPopComponent, OrderPopComponent, GuestPopComponent],
   imports: [
 	  BrowserModule, 
 	  IonicModule.forRoot(), 

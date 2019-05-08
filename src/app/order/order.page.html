@@ -21,8 +21,8 @@
 		</ion-grid>
 		<ion-item lines="none">备注：{{order.remarks}}</ion-item>
 		<ion-row text-center>
-			<ion-col><ion-button size="large" (click)="printOrder(order)">确认并打印</ion-button></ion-col>
-			<ion-col><ion-button size="large" (click)="cancelOrder(order)">取消</ion-button></ion-col>
+			<ion-col *ngIf='order.status==0'><ion-button size="large" (click)="printOrder(order)">确认并打印</ion-button></ion-col>
+			<ion-col *ngIf='order.status!=2'><ion-button size="large" (click)="cancelOrder(order)">取消</ion-button></ion-col>
 		</ion-row>
 	</ion-card>
 </ion-content>

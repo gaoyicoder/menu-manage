@@ -8,13 +8,21 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'index',
+        path: 'guest',
         canActivate: [AuthGuard],
         children: [
           {
             path: '',
-            loadChildren: '../index/index.module#IndexPageModule'
-          }
+            loadChildren: '../guest/guest.module#GuestPageModule'
+          },
+          {
+            path: 'recharge-type',
+            loadChildren: '../recharge-type/recharge-type.module#RechargeTypePageModule'
+          },
+          { 
+            path: 'recharge', 
+            loadChildren: '../recharge/recharge.module#RechargePageModule' 
+          },
         ]
       },
       {
@@ -58,7 +66,11 @@ const routes: Routes = [
           {
             path: 'menu-type',
             loadChildren: '../menu-type/menu-type.module#MenuTypePageModule'
-          }
+          },
+          { 
+            path: 'table', 
+            loadChildren: '../table/table.module#TablePageModule' 
+          },
         ]
       },
       {
@@ -73,14 +85,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/index',
+        redirectTo: '/tabs/order',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/index',
+    redirectTo: '/tabs/order',
     pathMatch: 'full'
   }
 ];

@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>member</ion-title>
+    <ion-title>我的</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-	<ion-button (click)="logout()" expand="block">Logout</ion-button>
+	<ion-button *ngIf="!selectedPrinter" (click)="getDeviceList()" expand="full" >设置打印机</ion-button>
+	<div *ngIf="selectedPrinter">{{selectedPrinter.label}} | <ion-button (click)="getDeviceList()">重新选择</ion-button></div>
+	<ion-button (click)="logout()" expand="block">退出</ion-button>
 </ion-content>

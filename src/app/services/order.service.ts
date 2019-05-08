@@ -35,7 +35,7 @@ export class OrderService {
 
   orderBalance(fromDate, toDate) {
     return new Promise(resolve=>{
-      this.http.post(this.serverUrl+'/orders/balance/', {fromDate: fromDate, toDate: toDate}).subscribe(
+      this.http.post(this.serverUrl+'/orders/balance', {fromDate: fromDate, toDate: toDate}).subscribe(
         data => {
           resolve(data);
         }
