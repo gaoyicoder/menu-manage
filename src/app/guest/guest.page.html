@@ -6,5 +6,21 @@
 </ion-header>
 
 <ion-content padding>
+	<ion-grid>
+		<ion-row style="border-bottom: 1px solid #d9d9d9">
+			<ion-col size="5">电话</ion-col>
+			<ion-col>余额</ion-col>
+		</ion-row>
+		<ion-row  *ngFor="let guest of guestData" style="border-bottom: 1px solid #d9d9d9">
+			<ion-col size="5">{{guest.phoneNumber}}</ion-col>
+			<ion-col>{{guest.balance}}</ion-col>
+		</ion-row>
+	</ion-grid>
 
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadGuestData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="加载中...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

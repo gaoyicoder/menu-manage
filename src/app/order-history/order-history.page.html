@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>今日订单</ion-title>
-    <ion-button slot="end" (click)="presentPop($event)">订单管理</ion-button>
+    <ion-title>历史订单</ion-title>
+    <ion-button slot="end" (click)="presentPop($event)">订单状态</ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -19,9 +19,6 @@
 				</span>
 			</div>
 			<ion-item lines="none">备注：{{order.remarks}}</ion-item>
-			<ion-row text-center>
-				<ion-col *ngIf='order.status!=2'><ion-button size="large" (click)="cancelOrder(order)">取消</ion-button></ion-col>
-			</ion-row>
 		</ion-card>
 	</ng-container>
 	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadOrderData($event)">

@@ -32,7 +32,11 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: '../order/order.module#OrderPageModule'
-          }
+          },
+          {
+            path: 'order-history',
+            loadChildren: '../order-history/order-history.module#OrderHistoryPageModule'
+          },
         ]
       },
       {

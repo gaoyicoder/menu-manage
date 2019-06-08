@@ -28,50 +28,64 @@ export class PrinterService {
   }
 
   printOrder(order) {
-    this.loadPrinter().then((printer) => {
-      this.ble.peripheralsWithIdentifiers([printer.value]).then(() => {
-        this.ble.connect(printer.value).subscribe(result => {
-          let service;
-          let characteristic;
-          result.characteristics.forEach((character)=> {
-            if(character.properties.includes("WriteWithoutResponse")) {
-              service = character.service;
-              characteristic = character.characteristic;
-            }
-          });
-          let paidStatus = order.isPay? "已结账":"未结账";
-          let receipt = commands.HARDWARE.HW_INIT; //Init Printer
-          receipt += commands.FF;
-          receipt += commands.TEXT_FORMAT.TXT_2HEIGHT; //Set font size 2*normal
-          receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT; //Centering
-          receipt += "点菜清单 - " + paidStatus + commands.EOL;
-          receipt += commands.TEXT_FORMAT.TXT_ALIGN_LT; //Centering
-          receipt += "桌号：" + order.tableNum + commands.EOL;
-          receipt += commands.TEXT_FORMAT.TXT_NORMAL; //Set font size 2*normal
-          receipt += commands.TEXT_FORMAT.TXT_ALIGN_LT; //Centering
-          receipt += commands.HORIZONTAL_LINE.HR_58MM + commands.EOL;
-          receipt += this.textLabel("订单编号：", order.id) + commands.EOL;
-          receipt += this.textLabel("时间：", order.createdAt) + commands.EOL;
-          receipt += commands.HORIZONTAL_LINE.HR_58MM + commands.EOL;
-          order.detail.forEach(menu => {
-            receipt += this.textLabel(menu.menuName, menu.num.toString()) + commands.EOL;
-          });
-          receipt += commands.HORIZONTAL_LINE.HR3_58MM + commands.EOL;
-          receipt += this.textLabel("备注：", order.remarks) + commands.EOL;
-          receipt += commands.HORIZONTAL_LINE.HR_58MM + commands.EOL;
-          receipt += this.textLabel("操作员：", this.appService.user.username) + commands.EOL;
+    return new Promise((resolve, reject)=>{
+      this.loadPrinter().then((printer) => {
+        console.log(order.tableNum + "A");
+        if (printer) {
+          this.ble.peripheralsWithIdentifiers([printer.value]).then(() => {
+            console.log(order.tableNum + "B");
+            this.ble.connect(printer.value).subscribe(result => {
+              console.log(order.tableNum + "C");
+              let service;
+              let characteristic;
+              result.characteristics.forEach((character)=> {
+                if(character.properties.includes("WriteWithoutResponse")) {
+                  service = character.service;
+                  characteristic = character.characteristic;
+                }
+              });
+              let paidStatus = order.isPay? "已结账":"未结账";
+              let receipt = commands.HARDWARE.HW_INIT; //Init Printer
+              receipt += commands.FF;
+              receipt += commands.TEXT_FORMAT.TXT_2HEIGHT; //Set font size 2*normal
+              receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT; //Centering
+              receipt += "点菜清单 - " + paidStatus + commands.EOL;
+              receipt += commands.TEXT_FORMAT.TXT_ALIGN_LT; //Centering
+              receipt += "桌号：" + order.tableNum + commands.EOL;
+              receipt += commands.TEXT_FORMAT.TXT_NORMAL; //Set font size normal
+              receipt += commands.TEXT_FORMAT.TXT_ALIGN_LT; //Centering
+              receipt += commands.HORIZONTAL_LINE.HR_58MM + commands.EOL;
+              receipt += this.textLabel("订单编号：", order.id) + commands.EOL;
+              receipt += this.textLabel("时间：", order.createdAt) + commands.EOL;
+              receipt += commands.HORIZONTAL_LINE.HR_58MM + commands.EOL;
+              receipt += commands.TEXT_FORMAT.TXT_2HEIGHT; //Set font size 2*normal
+              order.detail.forEach(menu => {
+                receipt += this.textLabel(menu.menuName, menu.num.toString()) + commands.EOL;
+              });
+              receipt += commands.TEXT_FORMAT.TXT_NORMAL; //Set font size normal
+              receipt += commands.HORIZONTAL_LINE.HR3_58MM + commands.EOL;
+              receipt += this.textLabel("备注：", order.remarks) + commands.EOL;
+              receipt += commands.HORIZONTAL_LINE.HR_58MM + commands.EOL;
+              receipt += this.textLabel("操作员：", this.appService.user.username) + commands.EOL;
 
 
-          let data = new TextEncoder('gb18030', {
-            NONSTANDARD_allowLegacyEncoding: true
-          }).encode(receipt);
-          let end = this.stringToBytes(commands.EOL+commands.FF+commands.FF);
+              let data = new TextEncoder('gb18030', {
+                NONSTANDARD_allowLegacyEncoding: true
+              }).encode(receipt);
+              let end = this.stringToBytes(commands.EOL+commands.FF+commands.FF);
 
-          data = this.appendBuffer(data, end);
-          this.ble.writeWithoutResponse(printer.value, service, characteristic, data).then(() => {
-            console.log('print success');
+              data = this.appendBuffer(data, end);
+              this.ble.writeWithoutResponse(printer.value, service, characteristic, data).then(() => {
+                console.log(order.tableNum + "D");
+                console.log('print success');
+                resolve();
+              });
+            });
           });
-        });
+        } else {
+          console.log("Empty printer");
+        }
+        
       });
     });
   }
@@ -85,7 +99,11 @@ export class PrinterService {
       return label + this.addSpace(space) + text;
     } else {
       space = pageWidth - this.gblen(text);
-      return label + commands.EOL + this.addSpace(space) + text;
+      if (space > 0) {
+        return label + commands.EOL + this.addSpace(space) + text;
+      } else {
+        return label + commands.EOL + this.gbCutStr(text, pageWidth);
+      }
     }
   }
 
@@ -112,16 +130,39 @@ export class PrinterService {
   }
 
   gblen (string){    
-    var len = 0;    
+    var len = 0;
     for (var i=0; i<string.length; i++) {    
       if (string.charCodeAt(i)>127 || string.charCodeAt(i)==94) {    
-        len += 2;    
+        len += 2;
       } else {    
         len ++;
-      }    
+      }
     }
     console.log(len);
     return len;
+  }
+
+  gbCutStr(string, cutLen) {
+    var cutStr = "";
+    while(this.gblen(string) > cutLen) {
+      var len = 0;
+      for (var j=0; j<string.length; j++) {
+        var len0 = len;
+        if (string.charCodeAt(j)>127 || string.charCodeAt(j)==94) {    
+          len += 2;
+        } else {    
+          len ++;
+        }
+        if (len > cutLen) {
+          cutStr = cutStr + string.substr(0,j) + commands.EOL;
+          string = string.substr(j);
+          break;
+        }
+      }
+    }
+    cutStr = cutStr + string;
+
+    return cutStr;
   }
 
 }

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class TablePage implements OnInit {
 
-	private tableData = [];
+	public tableData = [];
   constructor(
   	private popCtrl: PopoverController,
   	private toastCtrl: ToastController,

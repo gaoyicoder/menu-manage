@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class MenuPage implements OnInit {
 
-  menuData;
+  menuData = [];
   random;
   menuTypeData = [];
 
@@ -33,9 +33,15 @@ export class MenuPage implements OnInit {
         typeData.forEach((oldMenuType) => {
           this.menuTypeData[oldMenuType.id] = oldMenuType.typeName;
         });
-        this.menuService.getMenus({'sort': 'sequence'}).then(data => {
-          this.menuData = data;
+        this.menuService.getMenus({'sort': 'sequence'}).then((data:any) => {
+          data.forEach((oldMenu) => {
+            if (typeof(this.menuData[oldMenu.menuTypeId]) == "undefined") {
+              this.menuData[oldMenu.menuTypeId] = new Array();
+            }
+            this.menuData[oldMenu.menuTypeId].push(oldMenu);
+          });
         });
+
       }
     });
     this.random = Math.random();
@@ -45,6 +51,16 @@ export class MenuPage implements OnInit {
   }
   addMenu() {
     this.router.navigate(['tabs/menu-detail'], { queryParams: {menu: ""}});
+  }
+
+  setSoldOut(menu) {
+    menu.isSoldOut = 1;
+    this.menuService.updateMenu(menu);
+  }
+
+  setOnSale(menu) {
+    menu.isSoldOut = 0;
+    this.menuService.updateMenu(menu);
   }
 
   editMenu(menu, slidingItem) {

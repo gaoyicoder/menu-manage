@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { BLE } from '@ionic-native/ble/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,8 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/File/ngx';
+import { Insomnia } from '@ionic-native/insomnia/ngx';
+import { Media } from '@ionic-native/media/ngx';
 
 import { MenuPopComponent } from './components/menu-pop/menu-pop.component';
 import { OrderPopComponent } from './components/order-pop/order-pop.component';
@@ -28,7 +31,7 @@ export function jwtOptionsFactory(storage) {
     tokenGetter: () => { 
       return UserService.getTokenPromise(storage);
     },
-    whitelistedDomains:['backend.gaoyicoder.com'],
+    whitelistedDomains:['backend.gaoyicoder.com', 'backenddev.gaoyicoder.com'],
   }
 }
 
@@ -55,10 +58,13 @@ export function jwtOptionsFactory(storage) {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AppService,
     Camera,
+    Insomnia,
+    Media,
     WebView,
     FileTransfer,
     FileTransferObject,
     File,
+    BLE,
   ],
   bootstrap: [AppComponent]
 })

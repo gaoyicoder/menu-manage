@@ -6,5 +6,21 @@
 </ion-header>
 
 <ion-content padding>
+	<ion-card *ngFor="let recharge of rechargeData">
+		<ion-item lines="none">No.：{{recharge.tradeNo}}</ion-item>
+		<ion-item lines="none">电话：{{recharge.user.phoneNumber}}</ion-item>
+		<ion-item lines="none">
+			实充：{{recharge.realValue}}
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			赠送：{{recharge.rechargeValue-recharge.realValue}}
+		</ion-item>
+		<ion-item lines="none">时间：{{recharge.createdAt}}</ion-item>
+	</ion-card>
 
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadRechargeData($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="加载中...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

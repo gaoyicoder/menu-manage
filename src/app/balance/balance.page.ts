@@ -11,8 +11,8 @@ import { OrderService } from '../services/order.service';
 export class BalancePage implements OnInit {
 
 	public balanceForm: FormGroup;
-  private balance = {};
-  private JSON = JSON;
+  public balance = {};
+  public JSON = JSON;
   constructor(
   	private formBuilder: FormBuilder,
   	private toastCtrl: ToastController,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavParams, PopoverController } from '@ionic/angular';
 
 @Component({
@@ -9,17 +10,16 @@ import { NavParams, PopoverController } from '@ionic/angular';
 export class OrderPopComponent implements OnInit {
 
   constructor(
+    private router: Router,
   	private navParams: NavParams,
   	private popCtrl: PopoverController
   ) { }
 
   ngOnInit() {}
 
-  changeStatus(statusId) {
-  	let orderPage = this.navParams.get('orderPage');
-  	orderPage.orderStatusId = statusId;
-  	orderPage.getOrders();
-  	this.popCtrl.dismiss();
+  jumpTo(link) {
+    this.popCtrl.dismiss();
+    this.router.navigate([link]);
   }
 
 }

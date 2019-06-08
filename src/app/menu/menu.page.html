@@ -8,37 +8,37 @@
 
 <ion-content padding>
 	<ion-list>
-		<ion-item>
-			<ion-grid>
-				<ion-row>
-					<ion-col size="5">名称</ion-col>
-					<ion-col>价格</ion-col>
-					<ion-col>类别</ion-col>
-					<ion-col>图片</ion-col>
-				</ion-row>
-			</ion-grid>
-		</ion-item>
-		<ion-item-sliding #slidingItem *ngFor='let menu of menuData'>
-			<ion-item>
-				<ion-grid>
-					<ion-row>
-						<ion-col size="5">{{menu.menuName}}</ion-col>
-						<ion-col>{{menu.price}}</ion-col>
-						<ion-col>{{menuTypeData[menu.menuTypeId]}}</ion-col>
-						<ion-col>
-							<ion-thumbnail><img src="{{menu.imageUrl}}?random={{random}}"></ion-thumbnail>
-					  </ion-col>
-					</ion-row>
-				</ion-grid>
-			</ion-item>
-			<ion-item-options side="end">
-				<ion-item-option (click)="editMenu(menu, slidingItem)">
-        	<ion-icon name="create"></ion-icon>
-        </ion-item-option>
-        <ion-item-option (click)="confirmDelete(menu, slidingItem)" color="danger">
-          <ion-icon name="trash"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
-		</ion-item-sliding>
+		<ng-container *ngFor="let menuTypeList of menuData; let i = index">
+			<ng-container *ngIf="menuTypeData[i]">
+				<ion-list-header class="list-item-header">
+					<ion-label>{{menuTypeData[i]}}</ion-label>
+				</ion-list-header>
+				<ion-item-sliding #slidingItem *ngFor='let menu of menuTypeList'>
+					<ion-item>
+						<ion-grid>
+							<ion-row>
+								<ion-col size="5">{{menu.menuName}}</ion-col>
+								<ion-col>{{menu.price}}</ion-col>
+								<ion-col>
+									<ion-button size="small" *ngIf="menu.isSoldOut==0" type="button" (click)="setSoldOut(menu)">沽清</ion-button>
+									<ion-button color="medium" size="small" *ngIf="menu.isSoldOut==1" type="button" (click)="setOnSale(menu)">上架</ion-button>
+								</ion-col>
+								<ion-col>
+									<ion-thumbnail><img src="{{menu.imageUrl}}?random={{random}}"></ion-thumbnail>
+							  </ion-col>
+							</ion-row>
+						</ion-grid>
+					</ion-item>
+					<ion-item-options side="end">
+						<ion-item-option (click)="editMenu(menu, slidingItem)">
+		        	<ion-icon name="create"></ion-icon>
+		        </ion-item-option>
+		        <ion-item-option (click)="confirmDelete(menu, slidingItem)" color="danger">
+		          <ion-icon name="trash"></ion-icon>
+		        </ion-item-option>
+		      </ion-item-options>
+				</ion-item-sliding>
+			</ng-container>
+		</ng-container>
 	</ion-list>
 </ion-content>

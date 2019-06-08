@@ -4,8 +4,9 @@
 
 export const environment = {
   production: false,
-  serverUrl : 'https://backend.gaoyicoder.com',
+  serverUrl : 'https://backenddev.gaoyicoder.com',
   accessToken : '87c73aca29b94b6b44c0cbb646885846',
+  socketUrl : 'ws://backenddev.gaoyicoder.com',
 };
 
 /*
