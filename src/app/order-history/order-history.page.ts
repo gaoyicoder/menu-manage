@@ -4,7 +4,7 @@ import { PopoverController } from '@ionic/angular';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { OrderService } from '../services/order.service';
 import { IonInfiniteScroll } from '@ionic/angular';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-order-history',
@@ -15,29 +15,68 @@ export class OrderHistoryPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   orderData;
-  currentPage = 1;
   orderStatusList = {0: '未打印', 1: '已打印', 2: '已取消'};
+  orderHistoryForm: FormGroup;
+  search:any = {};
 
   constructor(
   	private orderService: OrderService, 
     private http: HttpClient,
     private popCtrl: PopoverController,
-  ) { }
+    private formBuilder: FormBuilder,
+  ) {
+
+    this.orderHistoryForm = this.formBuilder.group({
+      date: [''],
+      bottom: [''],
+      top: [''],
+      tradeNo: [''],
+      menuName: [''],
+    });
+  }
 
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    this.currentPage = 1;
+    this.reloadPage();
+  }
+
+  reloadPage() {
+    this.orderHistoryForm = this.formBuilder.group({
+      date: [''],
+      bottom: [''],
+      top: [''],
+      tradeNo: [''],
+      menuName: [''],
+    });
+    this.searchOrders();
+  }
+  searchOrders() {
+    this.search = {};
     this.infiniteScroll.disabled = false;
-    this.orderService.getOrders({'sort': '-createdAt'}).then(data => {
+    let formattedDate = "";
+    if (this.orderHistoryForm.value.date != "") {
+      let selectedDate = new Date(this.orderHistoryForm.value.date);
+      formattedDate = selectedDate.getFullYear() + "-" +  (selectedDate.getMonth() + 1) + "-" +  selectedDate.getDate();
+    }
+    this.search.createdAt = formattedDate;
+    this.search.bottom = this.orderHistoryForm.value.bottom;
+    this.search.top = this.orderHistoryForm.value.top;
+    this.search.tradeNo = this.orderHistoryForm.value.tradeNo;
+    this.search.menuName = this.orderHistoryForm.value.menuName;
+    this.search.sort = "-createdAt";
+    this.search.page = 1;
+
+    this.orderService.searchOrders(this.search).then(data => {
       this.orderData = data;
     });
   }
 
   loadOrderData(event) {
-    this.currentPage = this.currentPage + 1;
-    this.orderService.getOrders({'page': this.currentPage, 'sort': '-createdAt'}).then((guestData:any) => {
+    this.search.page = this.search.page + 1;
+
+    this.orderService.searchOrders(this.search).then((guestData:any) => {
       if (guestData.length != 0) {
         this.orderData = this.orderData.concat(guestData);
         event.target.complete();
@@ -45,6 +84,10 @@ export class OrderHistoryPage implements OnInit {
         event.target.disabled = true;
       }
     });
+  }
+
+  async onSubmit() {
+    this.searchOrders();
   }
 
   async presentPop(ev: any) {

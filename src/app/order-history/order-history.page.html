@@ -6,6 +6,32 @@
 </ion-header>
 
 <ion-content padding>
+	<div class="order-search">
+		<form [formGroup]='orderHistoryForm' (ngSubmit)="onSubmit()">
+			<div>
+				<div class="half fl">
+					<label class="fl">日期：</label>
+					<ion-datetime placeholder="日期" formControlName="date" class="fl no-padding" display-format="YYYY-MM-DD" picker-format="YYYY MM DD"></ion-datetime>
+				</div>
+				<div class="half fl">
+					<label class="fl">金额：</label>
+					<ion-input formControlName="bottom" class="fl money" style="--padding-top: 0px; --padding-end: 0px;" placeholder="￥"></ion-input>
+					<label class="fl">~</label>
+					<ion-input formControlName="top" class="fl money no-padding-input" style="--padding-top: 0px; --padding-end: 0px;" placeholder="￥"></ion-input>
+				</div>
+			</div>
+			<div>
+				<label class="fl">交易号：</label>
+				<ion-input formControlName="tradeNo" style="--padding-top: 0px; --padding-end: 0px;" class="fl trade-number" placeholder="交易号"></ion-input>
+			</div>
+			<div>
+				<label class="fl">菜品：</label>
+				<ion-input formControlName="menuName" style="--padding-top: 0px; --padding-end: 0px;" class="fl menu" placeholder="菜品名称"></ion-input>
+				<ion-button class="fr" size="small" (click)="reloadPage()" type="button">重置</ion-button>
+				<ion-button class="fr" size="small" type="submit">查询</ion-button>
+			</div>
+		</form>
+	</div>
 	<ng-container *ngFor="let order of orderData">
 		<ion-card>
 			<ion-item><h2>桌号：{{order.tableNum}}</h2></ion-item>
