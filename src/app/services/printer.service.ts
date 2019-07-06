@@ -61,6 +61,13 @@ export class PrinterService {
               receipt += commands.TEXT_FORMAT.TXT_2HEIGHT; //Set font size 2*normal
               order.detail.forEach(menu => {
                 receipt += this.textLabel(menu.menuName, menu.num.toString()) + commands.EOL;
+                if (menu.selectedTagList != undefined && menu.selectedTagList.length>0) {
+                  receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+                  menu.selectedTagList.forEach((selectedTag, index)=> {
+                    receipt += this.textLabel((index+1)+"：", selectedTag) + commands.EOL;
+                  });
+                  receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
+                }
               });
               receipt += commands.TEXT_FORMAT.TXT_NORMAL; //Set font size normal
               receipt += commands.HORIZONTAL_LINE.HR3_58MM + commands.EOL;

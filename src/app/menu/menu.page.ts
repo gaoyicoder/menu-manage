@@ -28,6 +28,8 @@ export class MenuPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.menuTypeData = [];
+    this.menuData = [];
     this.menuTypeService.getMenuTypes({'sort': 'sequence'}).then((typeData:any) => {
       if (typeData) {
         typeData.forEach((oldMenuType) => {

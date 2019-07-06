@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  ion-button {
+  	margin:10px 10px;
+  }
+}
+
+.tag-group-add {
+	float: right;
+	margin-top: -10px;
+	margin-bottom: -10px;
+}
+.tag-group-content {
+	margin: 10px 0 10px 0;	
+}
+
+.tag-group-texarea{
+	border: 1px rgb(140, 140, 140) solid;
+}

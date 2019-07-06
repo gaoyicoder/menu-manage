@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+  	<ion-button slot="start" (click)="addTag()"><ion-icon name="add"></ion-icon></ion-button>
+    <ion-title>菜单：味型模板</ion-title>
+    <ion-button slot="end" (click)="presentPop($event)">味型管理</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-list>
+		<ion-item>
+			<ion-grid>
+				<ion-row>
+					<ion-col>模板名称</ion-col>
+					<ion-col>操作</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-item>
+		<ion-item *ngFor='let tag of tagData'>
+			<ion-grid>
+				<ion-row>
+					<ion-col>
+						{{tag.name}}
+					</ion-col>
+					<ion-col>
+						<ion-button type="button" (click)="editMenu(tag)">编辑</ion-button>
+						<ion-button type="button" (click)="confirmDelete(tag)">删除</ion-button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-item>
+	</ion-list>
+</ion-content>

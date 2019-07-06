@@ -29,6 +29,13 @@
 		    </ion-select>
 		    <ion-text *ngIf="submitted&&menuForm.controls['menuTypeId'].invalid&&menuForm.controls['menuTypeId'].errors.required" class="input-hint">类别不能为空</ion-text>
 		  </ion-item>
+		  <ion-item class='selw75'>
+		  	<ion-label fixed>味型：</ion-label>
+		  	<ion-select formControlName="tagId">
+		  		<ion-select-option [value]="zero">空味型</ion-select-option>
+		      <ion-select-option *ngFor="let tag of tagList" [value]="tag.id">{{tag.name}}</ion-select-option>
+		    </ion-select>
+		  </ion-item>
 		  <ion-item>
 		  	<ion-label fixed>顺序：</ion-label>
 		    <ion-input type="number" placeholder="请输入顺序" formControlName="sequence"></ion-input>

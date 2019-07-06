@@ -75,6 +75,10 @@ const routes: Routes = [
             path: 'table', 
             loadChildren: '../table/table.module#TablePageModule' 
           },
+          { 
+            path: 'tag', 
+            loadChildren: '../tag/tag.module#TagPageModule' 
+          },
         ]
       },
       {
@@ -84,6 +88,16 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: '../menu-detail/menu-detail.module#MenuDetailPageModule'
+          }
+        ]
+      },
+      { 
+        path: 'tag-detail',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: '',
+            loadChildren: '../tag-detail/tag-detail.module#TagDetailPageModule'
           }
         ]
       },

@@ -6,6 +6,7 @@ import { MenuService } from '../services/menu.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { LoadingController } from '@ionic/angular';
+import { TagService } from '../services/tag.service';
 
 @Component({
   selector: 'app-menu-detail',
@@ -17,17 +18,20 @@ export class MenuDetailPage implements OnInit {
 	public menuForm: FormGroup;
   public submitted = false;
   public menuTypeList;
+  public tagList;
   private imageResponse: any;
 
   private imageChanged;
 
   private imagePath = '';
+  private zero = '0';
 
 	public menuObj = {
     id:'',
     imageUrl:'/assets/images/placeholder.jpg',
     menuName:'',
     menuTypeId:'',
+    tagId: '0',
     price:'',
     sequence: 0
   };
@@ -41,10 +45,12 @@ export class MenuDetailPage implements OnInit {
     private webview: WebView,
     private loadingCtrl: LoadingController,
     private router: Router,
+    private tagService: TagService,
   ) {
   	this.menuForm = this.formBuilder.group({
   		menuName: ['', Validators.required],
   		menuTypeId: ['', Validators.required],
+      tagId: ['0'],
   		price: ['', Validators.required],
       sequence: [0, Validators.required],
   	});
@@ -66,6 +72,7 @@ export class MenuDetailPage implements OnInit {
         imageUrl:'/assets/images/placeholder.jpg',
         menuName:'',
         menuTypeId:'',
+        tagId: '0',
         price:'',
         sequence: 0
       };
@@ -74,9 +81,16 @@ export class MenuDetailPage implements OnInit {
     this.menuForm.controls['menuName'].setValue(this.menuObj.menuName);
     this.menuForm.controls['price'].setValue(this.menuObj.price);
     this.menuForm.controls['menuTypeId'].setValue(this.menuObj.menuTypeId.toString());
+    this.menuForm.controls['tagId'].setValue(this.menuObj.tagId.toString());
     this.menuForm.controls['sequence'].setValue(this.menuObj.sequence);
     this.menuTypeService.getMenuTypes({'sort': 'id'}).then(data => {
       this.menuTypeList = data;
+    });
+    this.menuTypeService.getMenuTypes({'sort': 'id'}).then(data => {
+      this.menuTypeList = data;
+    });
+    this.tagService.getTags({'sort': 'name'}).then((data:any) => {
+      this.tagList = data;
     });
   }
   ngOnInit() {
@@ -112,6 +126,7 @@ export class MenuDetailPage implements OnInit {
       if(
         this.menuObj.menuName != this.menuForm.value.menuName ||
         this.menuObj.menuTypeId != this.menuForm.value.menuTypeId ||
+        this.menuObj.tagId != this.menuForm.value.tagId ||
         this.menuObj.price != this.menuForm.value.price ||
         this.menuObj.sequence != this.menuForm.value.sequence ||
         this.imageChanged == true
@@ -122,6 +137,7 @@ export class MenuDetailPage implements OnInit {
         loader.present();
         this.menuObj.menuName = this.menuForm.value.menuName;
         this.menuObj.menuTypeId = this.menuForm.value.menuTypeId;
+        this.menuObj.tagId = this.menuForm.value.tagId;
         this.menuObj.price = this.menuForm.value.price;
         this.menuObj.sequence = this.menuForm.value.sequence;
         this.menuService.saveMenu(this.menuObj).then((data: any) => {

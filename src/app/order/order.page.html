@@ -14,9 +14,14 @@
 			<ion-item lines="none">交易号：{{order.tradeNo}}</ion-item>
 			<ion-item lines="none">时间：{{order.createdAt}}</ion-item>
 			<div style="padding: 0 16px;">
-				<span style="height: 20px; display: block; float: left; margin: 2px 5px;" *ngFor='let menu of order.detail'>
+				<div *ngFor='let menu of order.detail'>
 					{{menu.menuName}}:{{menu.num}}
-				</span>
+					<ng-container *ngIf="menu.selectedTagList != 0">
+						<div style="margin-left: 5px; " *ngFor="let selectedTag of menu.selectedTagList;let i = index">
+							({{i+1}}：{{selectedTag}})
+						</div>
+					</ng-container>
+				</div>
 			</div>
 			<ion-item lines="none">备注：{{order.remarks}}</ion-item>
 			<ion-row text-center>
