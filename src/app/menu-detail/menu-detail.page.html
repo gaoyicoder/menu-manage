@@ -22,6 +22,14 @@
 
 		    <ion-text *ngIf="submitted&&menuForm.controls['price'].invalid&&menuForm.controls['price'].errors.required" class="input-hint">价格不能为空</ion-text>
 		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>原料：</ion-label>
+		    <ion-input maxlength="40" placeholder="请输入菜品原料" formControlName="recipe"></ion-input>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>介绍：</ion-label>
+		    <ion-textarea maxlength="250" placeholder="请输入菜品介绍" rows="3" formControlName="intro"></ion-textarea>
+		  </ion-item>
 		  <ion-item class='selw75'>
 		  	<ion-label fixed>类别：</ion-label>
 		  	<ion-select formControlName="menuTypeId">
@@ -32,7 +40,7 @@
 		  <ion-item class='selw75'>
 		  	<ion-label fixed>味型：</ion-label>
 		  	<ion-select formControlName="tagId">
-		  		<ion-select-option [value]="zero">空味型</ion-select-option>
+		  		<ion-select-option [value]="0">空味型</ion-select-option>
 		      <ion-select-option *ngFor="let tag of tagList" [value]="tag.id">{{tag.name}}</ion-select-option>
 		    </ion-select>
 		  </ion-item>
@@ -40,6 +48,13 @@
 		  	<ion-label fixed>顺序：</ion-label>
 		    <ion-input type="number" placeholder="请输入顺序" formControlName="sequence"></ion-input>
 		    <ion-text *ngIf="submitted&&menuForm.controls['sequence'].invalid&&menuForm.controls['sequence'].errors.required" class="input-hint">顺序不能为空</ion-text>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>视频：</ion-label>
+		    <ion-button size="small" type="button" (click)="pickVideo()">
+		    	<ng-container *ngIf="!menuObj.videoUrl">选取视频</ng-container>
+		    	<ng-container *ngIf="menuObj.videoUrl">已选择</ng-container>
+		    </ion-button>
 		  </ion-item>
 		  <ion-item>
 		  	<ion-img (click)="pickImage()" class="menu-img" src="{{menuObj.imageUrl}}"></ion-img>

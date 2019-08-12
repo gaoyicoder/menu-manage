@@ -7,6 +7,7 @@ import { PopoverController } from '@ionic/angular';
 import { OrderPopComponent } from '../components/order-pop/order-pop.component';
 import { Insomnia } from '@ionic-native/insomnia/ngx';
 import { IonInfiniteScroll, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order',
@@ -29,7 +30,8 @@ export class OrderPage implements OnInit {
     private printer: PrinterService,
     private popCtrl: PopoverController,
     private insomnia: Insomnia,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -65,7 +67,7 @@ export class OrderPage implements OnInit {
     var month = myDate.getMonth() + 1;
     var day = myDate.getDate();
     var today = year + '-' + month + '-' + day;
-    this.orderService.searchOrders({'createdAt': today, 'sort': '-createdAt'}).then(data => {
+    this.orderService.searchOrders({'createdAt': today, 'sort': '-createdAt', 'expand': 'user'}).then(data => {
       this.orderData = data;
     });
   }
@@ -95,7 +97,7 @@ export class OrderPage implements OnInit {
     var month = myDate.getMonth() + 1;
     var day = myDate.getDate();
     var today = year + '-' + month + '-' + day;
-    this.orderService.searchOrders({'createdAt': today, 'sort': '-createdAt', 'page': this.currentPage}).then((guestData: any) => {
+    this.orderService.searchOrders({'createdAt': today, 'sort': '-createdAt', 'expand': 'user', 'page': this.currentPage}).then((guestData: any) => {
       if (guestData.length != 0) {
         this.orderData = this.orderData.concat(guestData);
         event.target.complete();
@@ -103,6 +105,10 @@ export class OrderPage implements OnInit {
         event.target.disabled = true;
       }
     });
+  }
+
+  viewGuest(guest) {
+    this.router.navigate(['tabs/guest-detail'], { queryParams: {guest: JSON.stringify(guest)}});
   }
 
   async presentToast(message) {

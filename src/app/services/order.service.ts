@@ -77,6 +77,7 @@ export class OrderService {
         this.ws.onmessage = function (msg) 
         { 
           if (msg.data != 'heartbeat') {
+            console.log(msg);
             var order = JSON.parse(msg.data);
             orderPage.orderData.unshift(order);
             const file = that.media.create('/assets/audio/order.mp3');

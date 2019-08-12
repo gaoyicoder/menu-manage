@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  ion-button {
+  	margin:10px 10px;
+  }
+}
+
+.guest-detail-page {
+  .input-hint {
+    font-size: 0.8em;
+    color: var(--ion-color-danger);
+  }
+}

@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+  	<ion-buttons slot="start" >
+  		<ion-button routerLink="/tabs/guest"><ion-icon name="arrow-dropleft"></ion-icon>返回</ion-button>
+    </ion-buttons>
+    <ion-title>顾客详情</ion-title>
+  </ion-toolbar>
+</ion-header>
+	
+<ion-content padding>
+	<form [formGroup]='guestForm' (ngSubmit)="onSubmit()">
+		<ion-list class="guest-detail-page">
+		  <ion-item>
+		  	<ion-label fixed>电话：</ion-label>
+		    <ion-input type="text" placeholder="请输入电话"  formControlName="phoneNumber" [readonly]="phoneInput"></ion-input>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>备注：</ion-label>
+		    <ion-input type="text" placeholder="请输入备注" formControlName="remark"></ion-input>
+		  </ion-item>
+		  <div class="container">
+			  <div class="button-wrapper">
+			    <ion-button size="large" type="submit">保存</ion-button>
+		  		<ion-button size="large" type="button" routerLink="/tabs/menu">取消</ion-button>
+			  </div>
+			</div>
+		  <ion-item>
+		  	<ion-label fixed>消费：</ion-label>
+		    <ion-text>共消费{{guestOrder.num}}次</ion-text>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>金额：</ion-label>
+		    <ion-text>共消费{{guestOrder.total}}元</ion-text>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>账户余额：</ion-label>
+		    <ion-text>共{{guestObj.balance}}元</ion-text>
+		  </ion-item>
+		  <ion-item lines="none">
+		  	<ion-label fixed>最近五单：</ion-label>
+		  </ion-item>
+		  <ng-container *ngFor="let order of guestOrder.list">
+				<ion-card>
+					<ion-item><h2>桌号：{{order.tableNum}}</h2></ion-item>
+					<ion-item lines="none">小计：{{order.subtotal}}</ion-item>
+					<ion-item lines="none">状态：{{orderStatusList[order.status]}}</ion-item>
+					<ion-item lines="none">交易号：{{order.tradeNo}}</ion-item>
+					<ion-item lines="none">时间：{{order.createdAt}}</ion-item>
+					<div style="padding: 0 16px;">
+						<div *ngFor='let menu of order.detail'>
+							{{menu.menuName}}:{{menu.num}}
+							<ng-container *ngIf="menu.selectedTagList != 0">
+								<div style="margin-left: 5px; " *ngFor="let selectedTag of menu.selectedTagList;let i = index">
+									({{i+1}}：{{selectedTag}})
+								</div>
+							</ng-container>
+						</div>
+					</div>
+					<ion-item lines="none">备注：{{order.remarks}}</ion-item>
+				</ion-card>
+			</ng-container>
+		</ion-list>
+	</form>
+</ion-content>

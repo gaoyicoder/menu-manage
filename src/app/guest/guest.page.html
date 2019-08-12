@@ -6,14 +6,35 @@
 </ion-header>
 
 <ion-content padding>
+	<div class="guest-search">
+		<form [formGroup]='guestSearchForm' (ngSubmit)="onSubmit()">
+			<div>
+				<label class="fl">电话：</label>
+				<ion-input formControlName="phoneNumber" style="--padding-top: 0px; --padding-end: 0px;" class="fl input" placeholder="顾客电话 "></ion-input>
+			</div>
+			<div>
+				<label class="fl">备注：</label>
+				<ion-input formControlName="remark" style="--padding-top: 0px; --padding-end: 0px;" class="fl input" placeholder="备注信息"></ion-input>
+			</div>
+			<div>
+				<ion-button class="fr" size="small" (click)="reloadPage()" type="button">重置</ion-button>
+				<ion-button class="fr" size="small" type="submit">查询</ion-button>
+			</div>
+		</form>
+	</div>
 	<ion-grid>
-		<ion-row style="border-bottom: 1px solid #d9d9d9">
-			<ion-col size="5">电话</ion-col>
-			<ion-col>余额</ion-col>
+		<ion-row style="border-bottom: 1px solid #d9d9d9;width: 100%; height: 30px;">
+			<ion-col size="4.5" >电话</ion-col>
+			<ion-col size="1.5" >No.</ion-col>
+			<ion-col size="2.5" >余额</ion-col>
+			<ion-col size="3.5" >备注</ion-col>
 		</ion-row>
-		<ion-row  *ngFor="let guest of guestData" style="border-bottom: 1px solid #d9d9d9">
-			<ion-col size="5">{{guest.phoneNumber}}</ion-col>
-			<ion-col>{{guest.balance}}</ion-col>
+		<ion-row  *ngFor="let guest of guestData" style="border-bottom: 1px solid #d9d9d9; height: 35px; line-height: 35px;" (click)="editGuest(guest)">
+			<ion-col size="4.5" class="grid-data">{{guest.phoneNumber?guest.phoneNumber:"非会员"}}</ion-col>
+			<ion-col size="1.5">{{guest.orderNum}}</ion-col>
+			<ion-col size="2.5" class="grid-data">{{guest.balance}}</ion-col>
+			<ion-col size="3.5" class="grid-data">{{guest.remark}}</ion-col>
+			<ion-icon style="position: absolute; right: 30px; margin-top: 15px;" name="ios-arrow-forward"></ion-icon>
 		</ion-row>
 	</ion-grid>
 

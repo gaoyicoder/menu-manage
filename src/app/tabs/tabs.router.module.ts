@@ -101,6 +101,16 @@ const routes: Routes = [
           }
         ]
       },
+      { 
+        path: 'guest-detail',
+        canActivate: [AuthGuard],
+        children: [
+         {
+           path: '',
+           loadChildren: '../guest-detail/guest-detail.module#GuestDetailPageModule'
+         }
+        ]
+      },
       {
         path: '',
         redirectTo: '/tabs/order',

@@ -84,4 +84,24 @@ export class MenuService {
       }
     });
   }
+  uploadVideo(path, id) {
+    return UserService.getTokenPromise(this.storage).then(res => {
+      if (res) {
+        let options: FileUploadOptions = {
+          fileKey: 'ionicfile',
+          fileName: 'ionicfile',
+          chunkedMode: false,
+          mimeType: "video/mp4",
+          headers: { 'Authorization': 'Bearer ' + res }
+        }
+
+        const fileTransfer: FileTransferObject = this.transfer.create();
+        return fileTransfer.upload(path, this.serverUrl + '/menus/upload-video/' + id, options).then(data => {
+          return Promise.resolve(data);
+        });
+      } else {
+        return Promise.reject('Can not get token.');
+      }
+    });
+  }
 }
