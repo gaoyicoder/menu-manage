@@ -23,6 +23,10 @@ const routes: Routes = [
             path: 'recharge', 
             loadChildren: '../recharge/recharge.module#RechargePageModule' 
           },
+          { 
+            path: 'discount-type', 
+            loadChildren: '../discount-type/discount-type.module#DiscountTypePageModule'
+          },
         ]
       },
       {

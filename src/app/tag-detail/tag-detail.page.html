@@ -3,7 +3,7 @@
   	<ion-buttons slot="start" >
   		<ion-button routerLink="/tabs/menu/tag"><ion-icon name="arrow-dropleft"></ion-icon>返回</ion-button>
     </ion-buttons>
-    <ion-title>味型模板</ion-title>
+    <ion-title>规格模板</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,26 +11,36 @@
 	<ion-list class="tag-detail-page">
 	  <ion-item>
 	  	<ion-label fixed>名称：</ion-label>
-	    <ion-input type="text" placeholder="请输入名称" [(ngModel)]="tagObj.tagName"></ion-input>
+	    <ion-input type="text" placeholder="请输入模板名称" [(ngModel)]="tagObj.templateName"></ion-input>
 	  </ion-item>
+	  <ion-item>
+	  	<ion-label fixed>是否必选：</ion-label>
+	    <ion-toggle [(ngModel)]="tagObj.required"></ion-toggle>
+	  </ion-item>
+	  <ion-item style="margin-bottom: 10px;">
+	  	<ion-label fixed>是否多选：</ion-label>
+	    <ion-toggle [(ngModel)]="tagObj.multipled"></ion-toggle>
+	  </ion-item>
+	  <div class="divider"></div>
 	  <div style="padding: 16px;">
 	  	<div>
-	  		<label>味型多选：</label>
+	  		<label>商品规格：</label>
+	  		<ion-button (click)="addTag()" fill="clear" class="tag-group-add" ><ion-icon name="add-circle" size="default"></ion-icon></ion-button>
 	  	</div>
-	  	<div class="tag-group-content">
-	  		<ion-input type="text" placeholder="请输入组名" [(ngModel)]="tagObj.tagOther.groupName"></ion-input>
-	    	<ion-textarea class="tag-group-texarea" placeholder="请输入组味型" [(ngModel)]="tagObj.tagOther.groupType"></ion-textarea>
-	  	</div>
-	  </div>
-	  <div style="padding: 16px;">
-	  	<div>
-	  		<label>味型单选组：</label>
-	  		<ion-button (click)="addTagGroup()" fill="clear" class="tag-group-add" ><ion-icon name="add-circle" size="default"></ion-icon></ion-button>
-	  	</div>
-	  	<div class="tag-group-content" *ngFor='let tagGroupRow of tagObj.tagGroup'>
-	  		<ion-input type="text" placeholder="请输入组名" [(ngModel)]="tagGroupRow.groupName"></ion-input>
-	    	<ion-textarea class="tag-group-texarea" placeholder="请输入组味型" [(ngModel)]="tagGroupRow.groupType"></ion-textarea>
-	  	</div>
+	  	<ng-container *ngFor='let detailRow of tagObj.detail'>
+		  	<div class="tag-group-content">
+		  		<ion-item>
+				  	<ion-label fixed>规格名：</ion-label>
+				    <ion-input type="text" placeholder="请输入规格名称" [(ngModel)]="detailRow.name"></ion-input>
+				    <ion-button (click)="confirmDelete(detailRow)" fill="clear" class="tag-group-add" ><ion-icon name="remove-circle" size="default"></ion-icon></ion-button>
+				  </ion-item>
+		  		<ion-item>
+				  	<ion-label fixed>附加价格：</ion-label>
+				    <ion-input type="number" placeholder="请输入附加价格" [(ngModel)]="detailRow.price"></ion-input>
+				  </ion-item>
+		  	</div>
+		  	<div class="divider"></div>
+		  </ng-container>
 	  </div>
 	  <div class="container">
 		  <div class="button-wrapper">

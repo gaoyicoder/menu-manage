@@ -28,7 +28,7 @@ export class MenuService {
   }
 
   saveMenu(menu) {
-    if (menu.id == '') {
+    if (menu.id == 0) {
       return this.createMenu(menu);
     } else {
       return this.updateMenu(menu);

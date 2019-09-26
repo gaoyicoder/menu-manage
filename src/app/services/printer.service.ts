@@ -63,8 +63,16 @@ export class PrinterService {
                 receipt += this.textLabel(menu.menuName, menu.num.toString()) + commands.EOL;
                 if (menu.selectedTagList != undefined && menu.selectedTagList.length>0) {
                   receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-                  menu.selectedTagList.forEach((selectedTag, index)=> {
-                    receipt += this.textLabel((index+1)+"：", selectedTag) + commands.EOL;
+                  menu.selectedTagList.forEach((menuTag, index)=> {
+                    let tagRow = "";
+                    menuTag.forEach((tagGroup) => {
+                      tagGroup.detail.forEach((tag) => {
+                        if(tag.checked) {
+                          tagRow += tag.name + '; '
+                        }
+                      });
+                    });
+                    receipt += this.textLabel((index+1)+"：", tagRow) + commands.EOL;
                   });
                   receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
                 }

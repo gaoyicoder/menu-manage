@@ -21,7 +21,11 @@
 								<ion-col>{{menu.price}}</ion-col>
 								<ion-col>
 									<ion-button size="small" *ngIf="menu.isSoldOut==0" type="button" (click)="setSoldOut(menu)">沽清</ion-button>
-									<ion-button color="medium" size="small" *ngIf="menu.isSoldOut==1" type="button" (click)="setOnSale(menu)">上架</ion-button>
+									<ion-button color="medium" size="small" *ngIf="menu.isSoldOut==1" type="button" (click)="setOnSale(menu)">上线</ion-button>
+								</ion-col>
+								<ion-col>
+									<ion-button size="small" *ngIf="menu.isRemoved==0" type="button" (click)="setRemoved(menu)">下架</ion-button>
+									<ion-button color="medium" size="small" *ngIf="menu.isRemoved==1" type="button" (click)="setUnremoved(menu)">上架</ion-button>
 								</ion-col>
 								<ion-col>
 									<ion-thumbnail><img src="{{menu.imageUrl}}?random={{random}}"></ion-thumbnail>

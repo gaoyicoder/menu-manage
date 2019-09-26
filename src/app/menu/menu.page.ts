@@ -65,6 +65,16 @@ export class MenuPage implements OnInit {
     this.menuService.updateMenu(menu);
   }
 
+  setRemoved(menu) {
+    menu.isRemoved = 1;
+    this.menuService.updateMenu(menu);
+  }
+
+  setUnremoved(menu) {
+    menu.isRemoved = 0;
+    this.menuService.updateMenu(menu);
+  }
+
   editMenu(menu, slidingItem) {
     this.router.navigate(['tabs/menu-detail'], { queryParams: {menu: JSON.stringify(menu)}});
     slidingItem.close();

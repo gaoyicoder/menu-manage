@@ -6,7 +6,7 @@ import { MenuService } from '../services/menu.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { LoadingController, AlertController } from '@ionic/angular';
-import { TagService } from '../services/tag.service';
+import { MenuTagService } from '../services/menu-tag.service';
 
 declare let window: any;
 
@@ -30,18 +30,7 @@ export class MenuDetailPage implements OnInit {
   private videoPath = '';
   private zero = '0';
 
-	public menuObj = {
-    id:'',
-    imageUrl:'/assets/images/placeholder.jpg',
-    videoUrl:'',
-    menuName:'',
-    intro:'',
-    recipe:'',
-    menuTypeId:'',
-    tagId: '0',
-    price:'',
-    sequence: 0
-  };
+	public menuObj:any = {};
   
   constructor(
     private route: ActivatedRoute,
@@ -53,7 +42,7 @@ export class MenuDetailPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private router: Router,
-    private tagService: TagService,
+    private menuTagService: MenuTagService,
   ) {
   	this.menuForm = this.formBuilder.group({
   		menuName: ['', Validators.required],
@@ -103,10 +92,10 @@ export class MenuDetailPage implements OnInit {
     this.menuTypeService.getMenuTypes({'sort': 'id'}).then(data => {
       this.menuTypeList = data;
     });
-    this.menuTypeService.getMenuTypes({'sort': 'id'}).then(data => {
+    this.menuTypeService.getMenuTypes({'sort': 'sequence'}).then(data => {
       this.menuTypeList = data;
     });
-    this.tagService.getTags({'sort': 'name'}).then((data:any) => {
+    this.menuTagService.getMenuTag(this.menuObj).then((data:any) => {
       this.tagList = data;
     });
   }
@@ -175,46 +164,35 @@ export class MenuDetailPage implements OnInit {
     if (this.menuForm.invalid) {
       return false;
     } else {
-      if(
-        this.menuObj.menuName != this.menuForm.value.menuName ||
-        this.menuObj.intro != this.menuForm.value.intro ||
-        this.menuObj.recipe != this.menuForm.value.recipe ||
-        this.menuObj.menuTypeId != this.menuForm.value.menuTypeId ||
-        this.menuObj.tagId != this.menuForm.value.tagId ||
-        this.menuObj.price != this.menuForm.value.price ||
-        this.menuObj.sequence != this.menuForm.value.sequence ||
-        this.imageChanged == true || this.videoChanged == true
-      ) {
-        let loader = await this.loadingCtrl.create({
-          message: "正在保存",
-        });
-        loader.present();
-        this.menuObj.menuName = this.menuForm.value.menuName;
-        this.menuObj.intro = this.menuForm.value.intro;
-        this.menuObj.recipe = this.menuForm.value.recipe;
-        this.menuObj.menuTypeId = this.menuForm.value.menuTypeId;
-        this.menuObj.tagId = this.menuForm.value.tagId;
-        this.menuObj.price = this.menuForm.value.price;
-        this.menuObj.sequence = this.menuForm.value.sequence;
-        this.menuService.saveMenu(this.menuObj).then((data: any) => {
-          if (this.imageChanged == true) {
-            this.menuService.uploadImage(this.imagePath, data.id).then((data1) => {
-              this.imageChanged = false;
-              this.dismissView(loader);
-            });
-          }
-          if (this.videoChanged == true) {
-            this.menuService.uploadVideo(this.videoPath, data.id).then((data2) => {
-              this.videoChanged = false;
-              this.dismissView(loader);
-            });
-          }
-          this.dismissView(loader);
-        });
-      } else {
-        this.router.navigate(['/tabs/menu']);
-      }
       
+      let loader = await this.loadingCtrl.create({
+        message: "正在保存",
+      });
+      loader.present();
+      this.menuObj.menuName = this.menuForm.value.menuName;
+      this.menuObj.intro = this.menuForm.value.intro;
+      this.menuObj.recipe = this.menuForm.value.recipe;
+      this.menuObj.menuTypeId = this.menuForm.value.menuTypeId;
+      this.menuObj.tagId = this.menuForm.value.tagId;
+      this.menuObj.price = this.menuForm.value.price;
+      this.menuObj.sequence = this.menuForm.value.sequence;
+      this.menuObj.tagList = this.tagList;
+      
+      this.menuService.saveMenu(this.menuObj).then((data: any) => {
+        if (this.imageChanged == true) {
+          this.menuService.uploadImage(this.imagePath, data.id).then((data1) => {
+            this.imageChanged = false;
+            this.dismissView(loader);
+          });
+        }
+        if (this.videoChanged == true) {
+          this.menuService.uploadVideo(this.videoPath, data.id).then((data2) => {
+            this.videoChanged = false;
+            this.dismissView(loader);
+          });
+        }
+        this.dismissView(loader);
+      });
     }
   }
 

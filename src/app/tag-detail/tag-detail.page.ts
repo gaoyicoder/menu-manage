@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 import { TagService } from '../services/tag.service';
 
 @Component({
@@ -9,25 +9,13 @@ import { TagService } from '../services/tag.service';
   styleUrls: ['./tag-detail.page.scss'],
 })
 export class TagDetailPage implements OnInit {
-	public tagObj = {
-    id:'',
-    tagName:'',
-    tagOther: {
-      groupName: "",
-      groupType: ""
-    },
-    tagGroup: [
-    	{
-    		groupName: "",
-    		groupType: ""
-    	},
-    ],
-  };
+	public tagObj:any = {};
 
   constructor(
   	private router: Router,
   	private route: ActivatedRoute,
   	private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
   	private tagService: TagService,
   ) {
   }
@@ -36,58 +24,17 @@ export class TagDetailPage implements OnInit {
   }
   ionViewWillEnter() {
   	if(this.route.pathFromRoot[0].snapshot.queryParams.tag!=="") {
-      let tempObj = JSON.parse(this.route.pathFromRoot[0].snapshot.queryParams.tag);
-
-      let tempOther = {
-        groupName: "",
-        groupType: "",
-      };
-      tempOther.groupName = tempObj.other.name;
-      tempOther.groupType = "";
-      tempObj.other.type.forEach((data) => {
-        if ( tempOther.groupType == "") {
-          tempOther.groupType = data;
-        } else {
-          tempOther.groupType = tempOther.groupType + " " + data;
-        }
-      });
-
-      let tempGroup = [];
-      tempObj.group.forEach((groupData) => {
-        let tempRowGroup = {
-          groupName: "",
-          groupType: "",
-        };
-        tempRowGroup.groupName = groupData.name;
-        tempRowGroup.groupType = "";
-        groupData.type.forEach((data) => {
-          if ( tempRowGroup.groupType == "") {
-            tempRowGroup.groupType = data;
-          } else {
-            tempRowGroup.groupType = tempRowGroup.groupType + " " + data;
-          }
-        });
-        tempGroup.push(tempRowGroup);
-      });
-
-      this.tagObj = {
-        id: tempObj.id,
-        tagName: tempObj.name,
-        tagOther: tempOther,
-        tagGroup: tempGroup,
-      };
+      this.tagObj = JSON.parse(this.route.pathFromRoot[0].snapshot.queryParams.tag);
     } else {
     	this.tagObj = {
         id:'',
-        tagName:'',
-        tagOther: {
-          groupName: "",
-          groupType: ""
-        },
-        tagGroup: [
+        templateName:'',
+        required: 0,
+        multipled: 0,
+        detail: [
         	{
-        		groupName: "",
-        		groupType: ""
+        		name: "",
+        		price: 0,
         	},
         ],
       };
@@ -96,20 +43,45 @@ export class TagDetailPage implements OnInit {
   ionViewDidEnter() {
   }
 
-  addTagGroup() {
-    this.tagObj.tagGroup.push({groupName: "", groupType: ""});
+  addTag() {
+    this.tagObj.detail.push({name: "", price: 0});
+  }
+
+  removeTag(detailRow) {
+    this.tagObj.detail.splice(this.tagObj.detail.findIndex(item=> item.name === detailRow.name), 1);
   }
 
   save() {
-  	let isValid = true;
-  	if (this.tagObj.tagName == "") {
+  	if (this.tagObj.templateName == ""||this.tagObj.detail.length==0) {
   		this.presentToast("保存失败，类型名称或类型顺序不能为空");
-      isValid = false;
-  	}
-  	if (isValid) {
+  	} else {
   		this.tagService.saveTag(this.tagObj);
   		this.router.navigate(['/tabs/menu/tag']);
   	}
+  }
+
+  async confirmDelete(detailRow) {
+    const alert = await this.alertCtrl.create({
+      header: '确认删除',
+      message: '是否确认删除该规格',
+      buttons: [
+        {
+          text: '确认',
+          handler: () => {
+            this.removeTag(detailRow);
+            alert.dismiss();
+          }
+        },
+        {
+          text: '取消',
+          handler: () => {
+            alert.dismiss();
+          }
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   async presentToast(message) {

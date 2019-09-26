@@ -39,10 +39,12 @@
 		  </ion-item>
 		  <ion-item class='selw75'>
 		  	<ion-label fixed>味型：</ion-label>
-		  	<ion-select formControlName="tagId">
-		  		<ion-select-option [value]="0">空味型</ion-select-option>
-		      <ion-select-option *ngFor="let tag of tagList" [value]="tag.id">{{tag.name}}</ion-select-option>
-		    </ion-select>
+		  	<div class="menu-tag-list">
+		  		<div *ngFor="let tag of tagList">
+		  			<input id="tag_{{tag.id}}" type="checkbox" [(ngModel)]="tag.checked" [ngModelOptions]="{standalone: true}">
+		  			<label for="tag_{{tag.id}}">{{tag.templateName}}</label>
+		  		</div>
+		  	</div>
 		  </ion-item>
 		  <ion-item>
 		  	<ion-label fixed>顺序：</ion-label>

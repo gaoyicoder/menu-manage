@@ -72,7 +72,7 @@ export class TagPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.tagService.getTags({'sort': 'name'}).then((data:any) => {
+    this.tagService.getTags({'sort': 'templateName'}).then((data:any) => {
       this.tagData = data;
     });
   }

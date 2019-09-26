@@ -20,8 +20,15 @@
 				<div *ngFor='let menu of order.detail'>
 					{{menu.menuName}}:{{menu.num}}
 					<ng-container *ngIf="menu.selectedTagList != 0">
-						<div style="margin-left: 5px; " *ngFor="let selectedTag of menu.selectedTagList;let i = index">
-							({{i+1}}：{{selectedTag}})
+						<div style="margin-left: 5px; " *ngFor="let menuTag of menu.selectedTagList;let i = index">
+							{{i+1}}：
+							<ng-container *ngFor="let tagGroup of menuTag">
+								<ng-container *ngFor="let tag of tagGroup.detail">
+									<ng-container *ngIf="tag.checked">
+										{{tag.name}};
+									</ng-container>
+								</ng-container>
+							</ng-container>
 						</div>
 					</ng-container>
 				</div>
