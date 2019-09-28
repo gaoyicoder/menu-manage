@@ -18,6 +18,21 @@
 		  	<ion-label fixed>备注：</ion-label>
 		    <ion-input type="text" placeholder="请输入备注" formControlName="remark"></ion-input>
 		  </ion-item>
+		  <ion-item class='selw75'>
+		  	<ion-label fixed>赠送折扣：</ion-label>
+		  	<ion-select formControlName="discount">
+		  		<ion-select-option value="0">无折扣</ion-select-option>
+		      <ion-select-option *ngFor="let discount of discountList" value="{{discount.discount}}">{{discount.discount}}%</ion-select-option>
+		    </ion-select>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>折扣起始：</ion-label>
+		    <ion-datetime formControlName="discountFromDate" display-format="YYYY-MM-DD"></ion-datetime>
+		  </ion-item>
+		  <ion-item>
+		  	<ion-label fixed>折扣截止：</ion-label>
+		    <ion-datetime formControlName="discountToDate" display-format="YYYY-MM-DD"></ion-datetime>
+		  </ion-item>
 		  <div class="container">
 			  <div class="button-wrapper">
 			    <ion-button size="large" type="submit">保存</ion-button>
@@ -50,10 +65,17 @@
 						<div *ngFor='let menu of order.detail'>
 							{{menu.menuName}}:{{menu.num}}
 							<ng-container *ngIf="menu.selectedTagList != 0">
-								<div style="margin-left: 5px; " *ngFor="let selectedTag of menu.selectedTagList;let i = index">
-									({{i+1}}：{{selectedTag}})
-								</div>
-							</ng-container>
+							<div style="margin-left: 5px; " *ngFor="let menuTag of menu.selectedTagList;let i = index">
+								{{i+1}}：
+								<ng-container *ngFor="let tagGroup of menuTag">
+									<ng-container *ngFor="let tag of tagGroup.detail">
+										<ng-container *ngIf="tag.checked">
+											{{tag.name}};
+										</ng-container>
+									</ng-container>
+								</ng-container>
+							</div>
+						</ng-container>
 						</div>
 					</div>
 					<ion-item lines="none">备注：{{order.remarks}}</ion-item>

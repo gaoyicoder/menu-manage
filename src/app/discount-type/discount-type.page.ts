@@ -116,4 +116,9 @@ export class DiscountTypePage implements OnInit {
     }
   }
 
+  checkInput(ev) {
+    let isInt = /^[0-9]{0,1}$/.test(ev.target.value);
+    return isInt;
+  }
+
 }
