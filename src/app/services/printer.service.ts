@@ -62,7 +62,7 @@ export class PrinterService {
               order.detail.forEach(menu => {
                 receipt += this.textLabel(menu.menuName, menu.num.toString()) + commands.EOL;
                 if (menu.selectedTagList != undefined && menu.selectedTagList.length>0) {
-                  receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+                  receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
                   menu.selectedTagList.forEach((menuTag, index)=> {
                     let tagRow = "";
                     menuTag.forEach((tagGroup) => {

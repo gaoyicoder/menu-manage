@@ -58,10 +58,10 @@ export class GuestDetailPage implements OnInit {
     	this.guestForm.controls['remark'].setValue(this.guestObj.remark);
       this.guestForm.controls['discount'].setValue(this.guestObj.discount);
       if (this.guestObj.discountFromDate) {
-        this.guestForm.controls['discountFromDate'].setValue(this.guestObj.discountFromDate);
+        this.guestForm.controls['discountFromDate'].setValue(this.guestObj.discountFromDate.substr(0, 10));
       }
-      if (this.guestObj.discountFromDate) {
-        this.guestForm.controls['discountToDate'].setValue(this.guestObj.discountToDate);
+      if (this.guestObj.discountToDate) {
+        this.guestForm.controls['discountToDate'].setValue(this.guestObj.discountToDate.substr(0, 10));
       }
       if (this.guestObj.phoneNumber) {
         this.phoneInput = true;
